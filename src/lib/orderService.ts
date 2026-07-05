@@ -127,11 +127,30 @@ export const getOrdersOnce = async () => {
   }
 };
 
-export const subscribeToOrders = (callback: (orders: AdminOrder[]) => void) => {
+export const subscribeToOrders = (
+  callback: (orders: AdminOrder[]) => void,
+  onOrderAdded?: (order: AdminOrder) => void,
+) => {
   const ordersQuery = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
+  let hasLoadedInitialSnapshot = false;
+
   return onSnapshot(
     ordersQuery,
-    (snapshot) => callback(snapshot.docs.map(toAdminOrder)),
+    (snapshot) => {
+      const nextOrders = snapshot.docs.map(toAdminOrder);
+      callback(nextOrders);
+
+      if (!hasLoadedInitialSnapshot) {
+        hasLoadedInitialSnapshot = true;
+        return;
+      }
+
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added' && onOrderAdded) {
+          onOrderAdded(toAdminOrder(change.doc));
+        }
+      });
+    },
     (error) => {
       console.error('Firebase orders listener failed, using local fallback', error);
       callback(getStoredOrders());

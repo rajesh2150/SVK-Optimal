@@ -10,27 +10,36 @@ const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [notifications, setNotifications] = useState<AdminOrder[]>([]);
-  const previousOrderIds = useRef<string[]>([]);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const recentAddedOrderIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    const unsubscribe = subscribeToOrders((nextOrders) => {
-      setOrders(nextOrders);
-      setNotifications(nextOrders.filter((order) => order.status === 'Pending'));
+    const onInteraction = () => setHasUserInteracted(true);
+    window.addEventListener('click', onInteraction);
+    window.addEventListener('keydown', onInteraction);
 
-      const newIds = nextOrders.map((order) => order.id);
-      const previousIds = previousOrderIds.current;
-      if (previousIds.length && newIds.length > previousIds.length) {
-        const newlyAdded = nextOrders.find((order) => !previousIds.includes(order.id));
-        if (newlyAdded) {
+    const unsubscribe = subscribeToOrders(
+      (nextOrders) => {
+        setOrders(nextOrders);
+        setNotifications(nextOrders.filter((order) => order.status === 'Pending'));
+      },
+      (newOrder) => {
+        if (recentAddedOrderIds.current.has(newOrder.id)) return;
+        recentAddedOrderIds.current.add(newOrder.id);
+
+        toast.success(`New order ${newOrder.orderNumber} received`);
+        if (hasUserInteracted) {
           playNotificationSound();
-          toast.success(`New order ${newlyAdded.orderNumber} received`);
         }
-      }
-      previousOrderIds.current = newIds;
-    });
+      },
+    );
 
-    return () => unsubscribe();
-  }, []);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('click', onInteraction);
+      window.removeEventListener('keydown', onInteraction);
+    };
+  }, [hasUserInteracted]);
 
   const recentOrders = useMemo(() => orders.slice(0, 4), [orders]);
   const orderCounts = useMemo(
@@ -43,6 +52,7 @@ const AdminDashboardPage = () => {
     [orders],
   );
 
+  const pendingCount = notifications.length;
   const handleViewAllOrders = () => navigate('/admin/orders');
   const handleViewProducts = () => navigate('/admin/products');
 
@@ -92,6 +102,9 @@ const AdminDashboardPage = () => {
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">Notifications</p>
               <p className="mt-1 text-sm text-stone-600">Pending orders are highlighted for fast review.</p>
             </div>
+            {pendingCount > 0 && (
+              <span className="rounded-full bg-[#8B4513] px-3 py-1 text-xs font-semibold text-white">{pendingCount}</span>
+            )}
           </div>
           <button onClick={handleViewAllOrders} className="inline-flex items-center justify-center rounded-full border border-[#8B4513] px-4 py-2 text-sm font-semibold text-[#8B4513] transition hover:bg-[#FFF7D6]">Open orders</button>
         </div>
