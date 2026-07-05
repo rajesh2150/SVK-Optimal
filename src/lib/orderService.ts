@@ -15,7 +15,7 @@ import {
 import type { AdminOrder } from './sweetStore';
 import { auth, signInAnonymously } from './firebase';
 import { db } from './firebase';
-import { createOrderRecord, getProductImageForName, getStoredOrders, saveOrders } from './sweetStore';
+import { getProductImageForName, getStoredOrders, saveOrders } from './sweetStore';
 
 export type OrderStatus = AdminOrder['status'];
 
@@ -82,24 +82,6 @@ const toAdminOrder = (docSnap: QueryDocumentSnapshot<DocumentData>): AdminOrder 
 
 export const createOrderDocument = async (payload: OrderPayload) => {
   const orderNumber = payload.orderNumber || `SVK-${Date.now().toString().slice(-6)}`;
-  const record = createOrderRecord({
-    customerName: payload.customerName,
-    phone: payload.phoneNumber,
-    deliveryAddress: payload.address,
-    paymentMethod: payload.paymentMethod || 'RAZORPAY',
-    totalAmount: payload.price,
-    paymentStatus: payload.paymentStatus,
-    items: [
-      {
-        productId: 1,
-        productName: payload.sweetName,
-        quantity: 1,
-        weightOption: payload.quantity,
-        price: payload.price,
-        imageUrl: payload.imageUrl || getProductImageForName(payload.sweetName),
-      },
-    ],
-  });
 
   try {
     if (!auth.currentUser) {
@@ -130,8 +112,7 @@ export const createOrderDocument = async (payload: OrderPayload) => {
     return { id: orderNumber, orderNumber };
   } catch (error) {
     console.error('Order creation failed in Firestore', error);
-    saveOrders([record, ...getStoredOrders()]);
-    return { id: orderNumber, orderNumber };
+    throw new Error('Unable to save order to Firebase. Please try again or contact support.');
   }
 };
 
