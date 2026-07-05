@@ -16,7 +16,7 @@ export const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="border-b border-stone-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#8B4513] text-lg font-semibold text-white">SV</div>

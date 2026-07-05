@@ -28,6 +28,7 @@ const CheckoutPage = () => {
   const { items, subtotal, clearCart } = useCart();
   const [submittedOrder, setSubmittedOrder] = useState<string | null>(null);
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CheckoutFormValues>({ resolver: zodResolver(checkoutSchema), defaultValues: { paymentMethod: 'RAZORPAY' } });
+  const CHECKOUT_FORM_ID = 'checkout-form';
   const watchedPhone = watch('phone');
   const [matchedOrders, setMatchedOrders] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -187,7 +188,7 @@ const CheckoutPage = () => {
     <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
       <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
         <h1 className="text-3xl font-semibold text-stone-900">Checkout</h1>
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <form id={CHECKOUT_FORM_ID} className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label className="text-sm font-semibold text-stone-700">Customer name</label>
             <input {...register('customerName')} className="mt-2 w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none" />
@@ -276,7 +277,7 @@ const CheckoutPage = () => {
             <div className="mt-3 rounded-full border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-700">
               Online payment only — Razorpay will be used for checkout.
             </div>
-            <details className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm text-stone-700">
+            <details className="mt-3 hidden rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm text-stone-700 md:block">
               <summary className="font-semibold">Razorpay Test Integration (read before testing)</summary>
               <div className="mt-2 space-y-2">
                 <p>This app uses Razorpay in Test Mode for integration testing. Use only Test API keys and test cards/UPI flows. No real money is charged.</p>
@@ -285,7 +286,9 @@ const CheckoutPage = () => {
               </div>
             </details>
           </div>
-          <button disabled={isSubmitting} className="w-full rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70">{isSubmitting ? 'Processing...' : 'Place Order'}</button>
+          <button disabled={isSubmitting} className="hidden w-full rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 lg:inline-flex" type="submit">
+            {isSubmitting ? 'Processing...' : 'Place Order'}
+          </button>
         </form>
         {submittedOrder && <p className="mt-4 text-sm font-semibold text-emerald-600">Order placed successfully. Tracking ID: {submittedOrder}</p>}
       </div>
@@ -296,6 +299,9 @@ const CheckoutPage = () => {
         </div>
         <div className="mt-6 border-t border-stone-200 pt-4 flex items-center justify-between text-lg font-semibold text-stone-900"><span>Total</span><span>₹{subtotal}</span></div>
       </div>
+      <button disabled={isSubmitting} type="submit" form={CHECKOUT_FORM_ID} className="mt-4 w-full rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 lg:hidden">
+        {isSubmitting ? 'Processing...' : 'Place Order'}
+      </button>
     </div>
   );
 };

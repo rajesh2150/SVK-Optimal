@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { ShoppingBag, Star, Clock3, PackageOpen, ThermometerSnowflake, Truck } from 'lucide-react';
-import { useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { getProductImageForName, getWeightOptions, getProductPrice, getStoredProducts } from '../lib/sweetStore';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
-  const { addToCart } = useCart();
+  const { addToCart, items } = useCart();
   const [selectedWeight, setSelectedWeight] = useState('250g');
 
   const products = getStoredProducts();
@@ -47,9 +47,15 @@ const ProductDetailPage = () => {
                 ))}
               </div>
             </div>
-            <button onClick={() => addToCart(product, selectedWeight)} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white transition hover:bg-[#6f3410]">
-              <ShoppingBag size={18} /> Add to Cart
-            </button>
+            {items.some((item) => item.cartKey === `${product.id}__${selectedWeight}`) ? (
+              <Link to="/cart" className="flex w-full items-center justify-center gap-2 rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white transition hover:bg-[#6f3410]">
+                Go to Cart
+              </Link>
+            ) : (
+              <button onClick={() => addToCart(product, selectedWeight)} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#8B4513] px-6 py-3 font-semibold text-white transition hover:bg-[#6f3410]">
+                <ShoppingBag size={18} /> Add to Cart
+              </button>
+            )}
           </div>
         </div>
       </div>
