@@ -1,0 +1,11 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="48" fill="#FFF7D6"/>
+  <rect x="90" y="110" width="1020" height="680" rx="36" fill="#FFFDF6" stroke="#E9C86D" stroke-width="8"/>
+  <circle cx="600" cy="320" r="220" fill="#F6D79A"/>
+  <circle cx="600" cy="320" r="170" fill="#F9E5B6"/>
+  <ellipse cx="600" cy="560" rx="240" ry="120" fill="#D89A4A"/>
+  <path d="M360 405C420 300 520 250 620 286C740 330 770 466 706 544C660 606 556 620 462 595C394 578 322 515 332 458C335 442 344 423 360 405Z" fill="#8B4513"/>
+  <path d="M740 390C790 310 880 300 940 360C992 414 990 490 940 536C900 571 835 580 800 550C760 516 716 454 740 390Z" fill="#A45A21"/>
+  <path d="M420 700C470 660 550 660 610 700C672 742 752 748 808 716" stroke="#6F3410" stroke-width="18" stroke-linecap="round"/>
+  <text x="600" y="790" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="78" font-weight="700" fill="#8B4513">Palakova</text>
+</svg>
