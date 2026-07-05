@@ -42,6 +42,7 @@ const AdminLayout = ({ children }: { children?: ReactNode }) => {
             <div className="flex flex-wrap gap-3 text-sm">
               <Link to="/admin/orders" className="rounded-full border border-stone-200 bg-stone-50 px-4 py-2 font-semibold text-stone-700 hover:bg-[#FFF7D6]">Orders</Link>
               <Link to="/admin/products" className="rounded-full border border-stone-200 bg-stone-50 px-4 py-2 font-semibold text-stone-700 hover:bg-[#FFF7D6]">Products</Link>
+              <Link to="/admin/analytics" className="rounded-full border border-stone-200 bg-stone-50 px-4 py-2 font-semibold text-stone-700 hover:bg-[#FFF7D6]">Analytics</Link>
             </div>
           </div>
         </div>

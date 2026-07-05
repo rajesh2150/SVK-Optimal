@@ -6,6 +6,7 @@ import { CartProvider } from './context/CartContext';
 import { MainLayout } from './layouts/MainLayout';
 import AboutPage from './pages/AboutPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminAnalyticsPage from './pages/AdminAnalyticsPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminOrderDetailPage from './pages/AdminOrderDetailPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
       { path: 'orders', element: <AdminOrdersPage /> },
       { path: 'orders/:orderId', element: <AdminOrderDetailPage /> },
       { path: 'products', element: <AdminProductsPage /> },
+      { path: 'analytics', element: <AdminAnalyticsPage /> },
     ],
   },
 ]);

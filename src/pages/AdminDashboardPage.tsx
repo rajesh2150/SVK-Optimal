@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import type { AdminOrder } from '../lib/sweetStore';
 import notificationSound from '../assets/universfield-new-notification-057-494255.mp3';
 import { subscribeToOrders } from '../lib/orderService';
-
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<AdminOrder[]>([]);
@@ -55,6 +54,7 @@ const AdminDashboardPage = () => {
   const pendingCount = notifications.length;
   const handleViewAllOrders = () => navigate('/admin/orders');
   const handleViewProducts = () => navigate('/admin/products');
+  const handleViewAnalytics = () => navigate('/admin/analytics');
 
   const playNotificationSound = () => {
     try {
@@ -81,19 +81,6 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold text-stone-900">Admin Dashboard</h1>
-            <p className="mt-3 text-stone-600">Overview of orders, notifications, and quick admin actions.</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button onClick={handleViewAllOrders} className="rounded-full border border-[#8B4513] bg-[#FFF7D6] px-5 py-3 text-sm font-semibold text-[#8B4513]">View orders</button>
-            <button onClick={handleViewProducts} className="rounded-full border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-700 hover:bg-[#FFF7D6]">Manage products</button>
-          </div>
-        </div>
-      </div>
-
       <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -180,6 +167,7 @@ const AdminDashboardPage = () => {
           <div className="mt-6 grid gap-4">
             <button onClick={handleViewAllOrders} className="rounded-3xl border border-stone-200 bg-[#FFF7D6] px-5 py-4 text-left text-sm font-semibold text-[#8B4513]">Manage all orders</button>
             <button onClick={handleViewProducts} className="rounded-3xl border border-stone-200 bg-stone-50 px-5 py-4 text-left text-sm font-semibold text-stone-700">Edit product catalog</button>
+            <button onClick={handleViewAnalytics} className="rounded-3xl border border-stone-200 bg-stone-50 px-5 py-4 text-left text-sm font-semibold text-stone-700">View analytics</button>
             <button onClick={() => navigate('/admin')} className="rounded-3xl border border-stone-200 bg-white px-5 py-4 text-left text-sm font-semibold text-stone-700">Refresh dashboard</button>
           </div>
         </div>

@@ -8,6 +8,7 @@ const statusTabs = [
   { value: 'All', label: 'All orders' },
   { value: 'Pending', label: 'Pending' },
   { value: 'Accepted', label: 'Accepted' },
+  { value: 'On the way', label: 'On the way' },
   { value: 'Rejected', label: 'Rejected' },
   { value: 'Delivered', label: 'Delivered' },
 ];
